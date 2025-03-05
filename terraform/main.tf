@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "static_website" {
-  bucket = "my-static-website-bucket"
+  bucket = "html-thingy-bucket"
 }
 
 resource "aws_s3_bucket_website_configuration" "website" {
