@@ -49,7 +49,7 @@ jobs:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Plan
-        if: ${{ github.event.inputs.action == 'plan' }
+        if: ${{ github.event.inputs.action == 'plan' }}
         run: terraform plan -var="region=${{ env.AWS_REGION }}"
         working-directory: ./terraform
 
