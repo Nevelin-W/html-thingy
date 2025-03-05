@@ -47,13 +47,7 @@ resource "aws_s3_bucket_policy" "public_read" {
   ]
 }
 POLICY
-}
-
-resource "aws_s3_object" "index_html" {
-  bucket       = aws_s3_bucket.static_website.id
-  key          = "index.html"
-  content      = "<html><body><h1>Hello, World!</h1></body></html>"
-  content_type = "text/html"
+depends_on = [aws_s3_bucket_public_access_block.public_access]
 }
 
 output "website_url" {
