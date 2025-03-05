@@ -11,25 +11,9 @@ on:
           - plan
           - apply
           - destroy
-      # ec2_type:
-      #   description: 'Choose EC2 instance type'
-      #   required: true
-      #   default: 't2.micro'
-      #   type: choice
-      #   options:
-      #     - t2.micro
-      #     - t3.xlarge
 
-# env:
-#   EC2_NAME: SpaceEngineersServer
-#   EC2_TYPE: ${{ github.event.inputs.ec2_type }}
-#   EC2_KEY_NAME: se_server_ec2_key
-#   ENI_NAME: SpaceEngineersENI
-#   ROOT_VOLUME_TYPE: gp2
-#   ROOT_VOLUME_SIZE: 30
-#   AWS_REGION: eu-central-1
-#   SUBNET_ID: ${{ secrets.SUBNET_ID }}
-#   TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
+env:
+  AWS_REGION: eu-central-1
   
 jobs:
   terraform:
