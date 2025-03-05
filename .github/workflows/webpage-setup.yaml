@@ -53,6 +53,7 @@ jobs:
         run: terraform plan -var="region=${{ env.AWS_REGION }}"
         working-directory: ./terraform
 
+      # APPLY
       - name: Terraform Apply
         if: ${{ github.event.inputs.action == 'apply' }}
         run: terraform apply -auto-approve -var="region=${{ env.AWS_REGION }}"
@@ -61,6 +62,11 @@ jobs:
       - name: Upload webpage files to S3
         if: ${{ github.event.inputs.action == 'apply' }}
         run: aws s3 sync ./webpage s3://htmlthingy --delete
+
+      # DESTROY
+      - name: Empty S3 Bucket
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: aws s3 rm s3://htmlthingy --recursive
 
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
