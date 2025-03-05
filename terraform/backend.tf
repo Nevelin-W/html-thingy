@@ -1,7 +1,7 @@
 terraform { 
   cloud { 
     
-    organization = "html-thingy" 
+    organization = "HtmlThingy" 
 
     workspaces { 
       name = "html-thingy" 
