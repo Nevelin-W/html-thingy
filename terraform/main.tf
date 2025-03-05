@@ -1,6 +1,5 @@
 provider "aws" {
   region = var.region
-  profile = "default"
 }
 
 resource "aws_s3_bucket" "static_website" {
