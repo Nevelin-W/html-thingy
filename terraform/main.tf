@@ -3,7 +3,15 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "static_website" {
-  bucket = "html-thingy-bucket"
+  bucket = "html thingy"
+}
+
+resource "aws_s3_bucket_ownership_controls" "ownership" {
+  bucket = aws_s3_bucket.static_website.id
+
+  rule {
+    object_ownership = "BucketOwnerEnforced"
+  }
 }
 
 resource "aws_s3_bucket_website_configuration" "website" {
@@ -34,7 +42,7 @@ resource "aws_s3_bucket_policy" "public_read" {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::my-static-website-bucket/*"
+      "Resource": "arn:aws:s3:::${aws_s3_bucket.static_website.id}/*"
     }
   ]
 }
@@ -46,7 +54,6 @@ resource "aws_s3_object" "index_html" {
   key          = "index.html"
   content      = "<html><body><h1>Hello, World!</h1></body></html>"
   content_type = "text/html"
-  acl          = "public-read"
 }
 
 output "website_url" {
