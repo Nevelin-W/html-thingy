@@ -1,0 +1,76 @@
+name: webpage-setup
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Choose terraform action'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+      # ec2_type:
+      #   description: 'Choose EC2 instance type'
+      #   required: true
+      #   default: 't2.micro'
+      #   type: choice
+      #   options:
+      #     - t2.micro
+      #     - t3.xlarge
+
+# env:
+#   EC2_NAME: SpaceEngineersServer
+#   EC2_TYPE: ${{ github.event.inputs.ec2_type }}
+#   EC2_KEY_NAME: se_server_ec2_key
+#   ENI_NAME: SpaceEngineersENI
+#   ROOT_VOLUME_TYPE: gp2
+#   ROOT_VOLUME_SIZE: 30
+#   AWS_REGION: eu-central-1
+#   SUBNET_ID: ${{ secrets.SUBNET_ID }}
+#   TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
+  
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.10.2
+          terraform_wrapper: false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ./terraform
+
+      - name: Terraform Plan
+        if: ${{ github.event.inputs.action == 'plan' }}
+        run: terraform plan
+        working-directory: ./terraform
+
+      - name: Terraform Apply
+        if: ${{ github.event.inputs.action == 'apply' }}
+        id: terraform
+        run: terraform apply -auto-approve
+        working-directory: ./terraform
+
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: terraform destroy -auto-approve
+        working-directory: ./terraform
