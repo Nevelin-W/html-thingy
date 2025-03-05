@@ -60,7 +60,7 @@ jobs:
 
       - name: Upload webpage files to S3
         if: ${{ github.event.inputs.action == 'apply' }}
-        run: aws s3 sync ./webpage s3://YOUR_S3_BUCKET_NAME --delete
+        run: aws s3 sync ./webpage s3://htmlthingy --delete
 
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
