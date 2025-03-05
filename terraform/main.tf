@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "static_website" {
-  bucket = "html_thingy"
+  bucket = "HtmlThingy"
 }
 
 resource "aws_s3_bucket_ownership_controls" "ownership" {
